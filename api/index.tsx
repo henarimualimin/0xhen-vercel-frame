@@ -60,8 +60,8 @@ app.frame('/', (c) => {
     intents: [
       <TextInput placeholder="Submit Your Username." />,
       <Button value="Success" onClick={() => c.set({ buttonValue: 'Succes' })}>Submit</Button>,
-      <Button.Redirect value="https://warpcast.com/0xhen">Tip me</Button.Redirect>,
-      <Button.Redirect value="https://warpcast.com/~/compose?text=Frame_like_by_0xhen">Share</Button.Redirect>,
+      <Button.Link href="https://warpcast.com/0xhen">Tip me</Button.Link>,
+      <Button.Link href="https://warpcast.com/~/compose?text=Frame%20By%20@0xhen%20%20%20https://0xhen-vercel-frame.vercel.app/api">Share</Button.Link>,
       status === 'response' && <Button.Reset>Reset</Button.Reset>,
     ],
   })
