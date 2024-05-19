@@ -1,22 +1,29 @@
-// api/saveAddress.js
-import fs from 'fs';
-import path from 'path';
+const handleWalletSubmit = async () => {
+  const walletAddress = inputText; // Di sini Anda mendapatkan alamat wallet dari inputText
+  c.set({ status: 'submitted', walletAddress });
 
-export default function handler(req, res) {
-  if (req.method === 'POST') {
-    const { walletAddress } = req.body;
+  console.log('Submitting wallet address:', walletAddress);
 
-    if (walletAddress) {
-      const filePath = path.resolve('./public/addresses.txt');
-      const current = fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf-8') : '';
-      const updated = `${current}${walletAddress}\n`;
-      fs.writeFileSync(filePath, updated, 'utf-8');
-      
-      res.status(200).json({ message: 'Address saved successfully!' });
+  // Mengirim alamat wallet ke API server
+  try {
+    const response = await fetch('/api/saveAddress', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ walletAddress }),
+    });
+
+    const result = await response.json();
+    console.log('Server response:', result);
+
+    // Tambahkan pemeriksaan respons dari server
+    if (response.ok) {
+      console.log('Wallet address successfully submitted.');
     } else {
-      res.status(400).json({ message: 'No wallet address provided.' });
+      console.log('Failed to submit wallet address:', result.message);
     }
-  } else {
-    res.status(405).json({ message: 'Invalid request method.' });
+  } catch (error) {
+    console.error('Error saving wallet address:', error);
   }
-}
+};
