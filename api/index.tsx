@@ -90,7 +90,7 @@ app.frame('/', (c) => {
       </Button>,
 
       verificationStatus !== 'success' && verificationStatus !== 'failure' && (
-        <Button value="Success" onClick={checkFollowStatus}>
+        <Button value="Success">
           🔑Verify
         </Button>
       ),
@@ -106,7 +106,7 @@ app.frame('/', (c) => {
       ),
 
       verificationStatus === 'failure' && (
-        <Button value="verification failed" onClick={checkFollowStatus}>
+        <Button value="verification failed">
           Verify Again
         </Button>
       ),
