@@ -174,7 +174,7 @@ app.frame('/', (c) => {
         🎁Claim Degen
       </Button.Link>,
 
-      <Button.Link href="https://warpcast.com/~/compose?text=Frame%20By%20@0xhen%20https://0xhen-vercel-frame.vercel.app/api%20give%201%20word%20or%20put%20a%20space%20so%20that%20a%20frame%20image%20appears%20beri%201%20kata%20atau%20beri%20spasi%20agar%20muncul%20gambar%20bingkai">
+      <Button.Link href="https://warpcast.com/~/compose?text=Frame%20By%20@0xhen%20https://0xhen-vercel-frame.vercel.app/api">
         🔍Share
       </Button.Link>,
 
