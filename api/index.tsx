@@ -41,14 +41,13 @@ app.frame('/', (c) => {
     c.set({ frameSrc: url });
   };
 
-  const checkFollowStatus = () => {
-    // Implementasi logika untuk memeriksa status follow di sini
-    console.log('Checking follow status...');
+  const openNewFrame = (url) => {
+    handleFrameLoad(url);
   };
 
-  const openNewFrame = () => {
-    const newFrameSrc = 'https://glass.cx/degenclaim-2';
-    handleFrameLoad(newFrameSrc);
+  const openClaimDegenFrame = () => {
+    const claimDegenFrameSrc = 'https://glass.cx/degenclaim-2';
+    openNewFrame(claimDegenFrameSrc);
   };
 
   return c.res({
@@ -117,6 +116,13 @@ app.frame('/', (c) => {
         onClick={openNewFrame}
       >
         Load Frame
+      </Button>,
+
+      <Button
+        value="Claim Degen"
+        onClick={openClaimDegenFrame}
+      >
+        Load Frame from Glass.cx
       </Button>,
 
       status === 'response' && <Button.Reset>🗑Reset</Button.Reset>,
