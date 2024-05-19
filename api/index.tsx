@@ -1,7 +1,6 @@
 import { Button, Frog, TextInput } from 'frog';
 import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
-// import { neynar } from 'frog/hubs'
 import { handle } from 'frog/vercel';
 
 // Uncomment to use Edge Runtime.
@@ -17,7 +16,7 @@ export const app = new Frog({
 });
 
 app.frame('/', (c) => {
-  const { buttonValue, inputText, status, verificationStatus } = c;
+  const { buttonValue, inputText, status, verificationStatus, walletAddress } = c;
   const fruit = inputText || buttonValue;
 
   // Fungsi untuk memeriksa apakah pengguna mengikuti akun @0xhen di Warpcast
@@ -49,6 +48,37 @@ app.frame('/', (c) => {
     } catch (error) {
       console.error('Error checking follow status:', error);
       c.set({ verificationStatus: 'failure' });
+    }
+  };
+
+  // Fungsi untuk menangani submit alamat wallet
+  const handleWalletSubmit = async () => {
+    const walletAddress = inputText;
+    c.set({ status: 'submitted', walletAddress });
+
+    console.log('Submitting wallet address:', walletAddress);
+
+    // Mengirim alamat wallet ke API server
+    try {
+      const response = await fetch('/api/saveAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ walletAddress }),
+      });
+
+      const result = await response.json();
+      console.log('Server response:', result);
+
+      // Tambahkan pemeriksaan respons dari server
+      if (response.ok) {
+        console.log('Wallet address successfully submitted.');
+      } else {
+        console.log('Failed to submit wallet address:', result.message);
+      }
+    } catch (error) {
+      console.error('Error saving wallet address:', error);
     }
   };
 
@@ -89,11 +119,33 @@ app.frame('/', (c) => {
         >
           {status === 'response'
             ? `Nice choice.${buttonValue ? `${buttonValue.toUpperCase()}!!` : ''}`
+            : status === 'submitted'
+            ? `Wallet Address Submitted: ${walletAddress}`
             : 'Welcome! To Daily Claim Reward'}
         </div>
+        {status === 'submitted' && (
+          <div
+            style={{
+              color: 'white',
+              fontSize: 20,
+              marginTop: 20,
+            }}
+          >
+            Your ETH Wallet Address: {walletAddress}
+          </div>
+        )}
       </div>
     ),
     intents: [
+      <TextInput
+        placeholder="Enter your ETH wallet address"
+        onInput={(e) => c.set({ inputText: e.target.value })}
+      />,
+
+      <Button value="Submit Wallet" onClick={handleWalletSubmit}>
+        📤Submit Wallet
+      </Button>,
+
       verificationStatus !== 'success' && verificationStatus !== 'failure' && (
         <Button value="Success" onClick={checkFollowStatus}>
           🔑Verify
@@ -118,8 +170,7 @@ app.frame('/', (c) => {
 
       // Tombol redirect link
       <Button.Link href="https://warpcast.com/0xhen/0xe487f3c0">
-        
-🎁Claim Degen
+        🎁Claim Degen
       </Button.Link>,
 
       <Button.Link href="https://warpcast.com/~/compose?text=Frame%20By%20@0xhen%20%20%20https://0xhen-vercel-frame.vercel.app/api">
