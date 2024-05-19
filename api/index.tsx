@@ -143,7 +143,7 @@ app.frame('/', (c) => {
         onInput={(e) => c.set({ inputText: e.target.value })}
       />,
 
-      <Button value="Success" onClick={handleWalletSubmit}>
+      <Button value="Done Submit" onClick={handleWalletSubmit}>
         📤Submit Wallet
       </Button>,
 
