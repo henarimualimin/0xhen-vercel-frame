@@ -11,6 +11,32 @@ export const app = new Frog({
 app.frame('/', (c) => {
   const { inputText, status, walletAddress, verificationStatus, frameSrc } = c;
 
+  const handleWalletSubmit = async () => {
+    const walletAddress = inputText;
+    console.log("Submitting wallet address:", walletAddress);
+    
+    c.set({ status: 'submitted', walletAddress });
+
+    try {
+      const response = await fetch('/api/saveAddress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ walletAddress }),
+      });
+
+      const result = await response.json();
+      console.log("Response from server:", result);
+      
+      if (!response.ok) {
+        console.error('Failed to submit wallet address:', result.message);
+      }
+    } catch (error) {
+      console.error('Error saving wallet address:', error);
+    }
+  };
+
   const handleFrameLoad = (url) => {
     c.set({ frameSrc: url });
   };
