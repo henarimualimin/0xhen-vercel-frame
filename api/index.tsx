@@ -41,6 +41,11 @@ app.frame('/', (c) => {
     c.set({ frameSrc: url });
   };
 
+  const checkFollowStatus = () => {
+    // Implementasi logika untuk memeriksa status follow di sini
+    console.log('Checking follow status...');
+  };
+
   return c.res({
     image: (
       <div
