@@ -1,4 +1,4 @@
-import { Button, Frog, Frame, TextInput } from 'frog'; // Import Frame dari Frog
+import { Button, Frog, TextInput } from 'frog';
 import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
 import { handle } from 'frog/vercel';
@@ -9,32 +9,10 @@ export const app = new Frog({
 });
 
 app.frame('/', (c) => {
-  const { inputText, status, walletAddress, verificationStatus } = c;
+  const { inputText, status, walletAddress, verificationStatus, frameSrc } = c;
 
-  const handleWalletSubmit = async () => {
-    const walletAddress = inputText;
-    console.log("Submitting wallet address:", walletAddress);
-    
-    c.set({ status: 'submitted', walletAddress });
-
-    try {
-      const response = await fetch('/api/saveAddress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ walletAddress }),
-      });
-
-      const result = await response.json();
-      console.log("Response from server:", result);
-      
-      if (!response.ok) {
-        console.error('Failed to submit wallet address:', result.message);
-      }
-    } catch (error) {
-      console.error('Error saving wallet address:', error);
-    }
+  const handleFrameLoad = (url) => {
+    c.set({ frameSrc: url });
   };
 
   return c.res({
@@ -98,15 +76,22 @@ app.frame('/', (c) => {
         </Button>
       ),
 
-      // Gunakan Frame untuk memuat tampilan dari URL tertentu
-      <Frame src="https://glass.cx/degenclaim-2">
-        {({ loading, content, error }) => (
-          loading ? 'Loading...' : (content || error)
-        )}
-      </Frame>,
+      <Button
+        value="Load Frame"
+        onClick={() => handleFrameLoad('https://glass.cx/degenclaim-2')}
+      >
+        Load Frame
+      </Button>,
 
       status === 'response' && <Button.Reset>🗑Reset</Button.Reset>,
     ].filter(Boolean), // Filter untuk menghapus nilai-nilai "falsy" dari array
+    frameSrc && (
+      <iframe
+        src={frameSrc}
+        style={{ width: '100%', height: '300px', border: 'none' }}
+        title="Frame"
+      />
+    ),
   });
 });
 
