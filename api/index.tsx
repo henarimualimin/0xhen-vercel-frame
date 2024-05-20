@@ -170,8 +170,8 @@ app.frame('/', (c) => {
       ),
 
       // Tombol redirect link
-      <Button.Link href="https://warpcast.com/0xhen/0xe487f3c0">
-        🎁Claim Degen
+      <Button.Link href="https://warpcast.com/0xhen/0xf3bcfcda">
+        🎁Claim $BUILD
       </Button.Link>,
 
       <Button.Link href="https://warpcast.com/~/compose?text=Frame%20By%20@0xhen%20https://0xhen-vercel-frame.vercel.app/api">
